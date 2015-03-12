@@ -8,7 +8,7 @@
 // @include     http://g.e-hentai.org/g/*
 // @downloadURL https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.user.js
 // @updateURL   https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.user.js
-// @version     0.1
+// @version     0.2
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
 var $a = function(a){return document.querySelector(a)};
@@ -162,11 +162,12 @@ function GMget(tar,imageid){
 	    GM_xmlhttpRequest({
 			method:"GET",
 			url:imgurl.attr('src'),
-			headers:{
+			//headers:{
 				//Referer: url,
-				Accept:"image//png,image/*;q=0.8,*/*;q=0.5",
-			},
-			overrideMimeType: 'text\/plain; charset=x-user-defined',
+				//Accept:"image//png,image/*;q=0.8,*/*;q=0.5",
+			//},
+			overrideMimeType: 'text/plain; charset=x-user-defined',
+			//responseType: 'blob',
 			timeout: 30000,
 			onerror:function(res){
 				console.log('from chaojiexhentai:')
@@ -186,6 +187,7 @@ function GMget(tar,imageid){
 		            byteArray[i] = text.charCodeAt(i) & 0xff;
 		        }
 		        var blob = new Blob([byteArray],{'type':'image\/*'});
+		        //var blob = res.response;
 		        //console.log(blob);
 				putImgInDb(imageid,blob);
 				//alert(performance.now()-stime);
@@ -211,7 +213,7 @@ function getNextPage(callback){
 		if(typeof(callback)=='function'){callback()}
 	}) 
 }
-function putInGdt(elm){
+function putInGdt(elm){//区别两种dom树
 	if(elm[0].children[0].tagName=='DIV'){
 		var a = $(elm).find('div').clone();
 		a.children('a').click(getImageFile);
@@ -225,7 +227,7 @@ function putInGdt(elm){
 function loadgdtsImg(evt){
 	toggle();
 	getImageFile($a('#layer_multipic a[href="'+evt.currentTarget.href+'"]'));
-	return false;
+	evt.preventDefault();
 }
 function autoLoad(tar){
 	t=setTimeout(function(){getImageFile(nextA(tar),'')},3000)
@@ -260,6 +262,3 @@ $('body').append(gdt);
 $('body').append($('<div class="viewer" style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 9000; opacity: 0.8; background: none repeat scroll 0px 0px rgb(0, 0, 0);display:none;"></div>').click(toggle))
 //克隆一份图片列表放到看图器
 putInGdt($('.gdtl,.gdtm'));
-var gdtsreload = document.createElement('a');
-gdtsreload.className = 'reload';
-//$(gdtsreload).click()
