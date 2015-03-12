@@ -117,7 +117,13 @@ function getImageFile(evt,a){
     var blob;
     var tar = evt.currentTarget||evt;
     if(a==undefined){scroll_to(tar.parentElement)};
-    if(tar.getAttribute('static')=='loaded'){getImageFile(nextA(tar),'');return false;}
+    if(tar.getAttribute('static')=='loaded'){
+    	//console.log(evt);
+    	evt.preventDefault();
+    	getImageFile(nextA(tar),'');
+
+    	return;
+    }
     var imageid = tar.pathname.split('/')[3];
     var transaction = localDatabase.db.transaction("exhentai", "readwrite");
     var store = transaction.objectStore("exhentai");
@@ -226,8 +232,9 @@ function putInGdt(elm){//区别两种dom树
 }
 function loadgdtsImg(evt){
 	toggle();
-	getImageFile($a('#layer_multipic a[href="'+evt.currentTarget.href+'"]'));
+	//console.log(evt);
 	evt.preventDefault();
+	getImageFile($a('#layer_multipic a[href="'+evt.currentTarget.href+'"]'));
 }
 function autoLoad(tar){
 	t=setTimeout(function(){getImageFile(nextA(tar),'')},3000)
