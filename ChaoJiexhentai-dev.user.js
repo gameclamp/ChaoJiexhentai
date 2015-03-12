@@ -260,5 +260,15 @@ gdt.appendChild(options);
 //				'<a style="float: right;font-size: 2em;position: relative;text-decoration: none;top: -5px;" id='
 $('body').append(gdt);
 $('body').append($('<div class="viewer" style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 9000; opacity: 0.8; background: none repeat scroll 0px 0px rgb(0, 0, 0);display:none;"></div>').click(toggle))
-//克隆一份图片列表放到看图器
-putInGdt($('.gdtl,.gdtm'));
+putInGdt($('.gdtl,.gdtm'));//克隆一份图片列表放到看图器
+$(document).keydown(function(e){
+	if(e.which == 81){//按下q键
+		toggle();
+	}
+	if(e.which == 83){//按下s键
+		stopAutoLoad();
+	}
+	if(e.which == 39){//按下→键
+		getNextPage();
+	}
+})
