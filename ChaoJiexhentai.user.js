@@ -1,14 +1,14 @@
 // ==UserScript==
-// @name        ChaoJiexhentai
+// @name        ChaoJiexhentai-dev
 // @namespace   https://github.com/gameclamp/ChaoJiexhentai
 // @author      9尾雪狐(gameclamp)
 // @description 更好的看漫画，更多帮助查看https://github.com/gameclamp/ChaoJiexhentai
 // @icon        https://github.com/gameclamp/ChaoJiexhentai/raw/master/icon.png
 // @include     http://exhentai.org/g/*
 // @include     http://g.e-hentai.org/g/*
-// @downloadURL https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai.user.js
-// @updateURL   https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai.user.js
-// @version     0.1
+// @downloadURL https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.user.js
+// @updateURL   https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.user.js
+// @version     0.2
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
 var $a = function(a){return document.querySelector(a)};
@@ -117,7 +117,13 @@ function getImageFile(evt,a){
     var blob;
     var tar = evt.currentTarget||evt;
     if(a==undefined){scroll_to(tar.parentElement)};
-    if(tar.getAttribute('static')=='loaded'){getImageFile(nextA(tar),'');return false;}
+    if(tar.getAttribute('static')=='loaded'){
+    	//console.log(evt);
+    	evt.preventDefault();
+    	getImageFile(nextA(tar),'');
+
+    	return;
+    }
     var imageid = tar.pathname.split('/')[3];
     var transaction = localDatabase.db.transaction("exhentai", "readwrite");
     var store = transaction.objectStore("exhentai");
@@ -162,11 +168,12 @@ function GMget(tar,imageid){
 	    GM_xmlhttpRequest({
 			method:"GET",
 			url:imgurl.attr('src'),
-			headers:{
+			//headers:{
 				//Referer: url,
-				Accept:"image//png,image/*;q=0.8,*/*;q=0.5",
-			},
-			overrideMimeType: 'text\/plain; charset=x-user-defined',
+				//Accept:"image//png,image/*;q=0.8,*/*;q=0.5",
+			//},
+			overrideMimeType: 'text/plain; charset=x-user-defined',
+			//responseType: 'blob',
 			timeout: 30000,
 			onerror:function(res){
 				console.log('from chaojiexhentai:')
@@ -186,6 +193,7 @@ function GMget(tar,imageid){
 		            byteArray[i] = text.charCodeAt(i) & 0xff;
 		        }
 		        var blob = new Blob([byteArray],{'type':'image\/*'});
+		        //var blob = res.response;
 		        //console.log(blob);
 				putImgInDb(imageid,blob);
 				//alert(performance.now()-stime);
@@ -211,7 +219,7 @@ function getNextPage(callback){
 		if(typeof(callback)=='function'){callback()}
 	}) 
 }
-function putInGdt(elm){
+function putInGdt(elm){//区别两种dom树
 	if(elm[0].children[0].tagName=='DIV'){
 		var a = $(elm).find('div').clone();
 		a.children('a').click(getImageFile);
@@ -224,8 +232,9 @@ function putInGdt(elm){
 }
 function loadgdtsImg(evt){
 	toggle();
+	//console.log(evt);
+	evt.preventDefault();
 	getImageFile($a('#layer_multipic a[href="'+evt.currentTarget.href+'"]'));
-	return false;
 }
 function autoLoad(tar){
 	t=setTimeout(function(){getImageFile(nextA(tar),'')},3000)
@@ -258,8 +267,15 @@ gdt.appendChild(options);
 //				'<a style="float: right;font-size: 2em;position: relative;text-decoration: none;top: -5px;" id='
 $('body').append(gdt);
 $('body').append($('<div class="viewer" style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 9000; opacity: 0.8; background: none repeat scroll 0px 0px rgb(0, 0, 0);display:none;"></div>').click(toggle))
-//克隆一份图片列表放到看图器
-putInGdt($('.gdtl,.gdtm'));
-var gdtsreload = document.createElement('a');
-gdtsreload.className = 'reload';
-//$(gdtsreload).click()
+putInGdt($('.gdtl,.gdtm'));//克隆一份图片列表放到看图器
+$(document).keydown(function(e){
+	if(e.which == 81){//按下q键
+		toggle();
+	}
+	if(e.which == 83){//按下s键
+		stopAutoLoad();
+	}
+	if(e.which == 39){//按下→键
+		getNextPage();
+	}
+})
