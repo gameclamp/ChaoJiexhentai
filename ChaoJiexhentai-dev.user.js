@@ -8,7 +8,7 @@
 // @include     http://g.e-hentai.org/g/*
 // @downloadURL https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.user.js
 // @updateURL   https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.user.js
-// @version     0.2
+// @version     0.3
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
 var $a = function(a){return document.querySelector(a)};
@@ -160,7 +160,7 @@ function GMget(tar,imageid){
     $.get(tar.href,function(data){//从小图地址获取大图页html
 		var $data = $(data);
     	var imgurl = $data.find('#img');
-		var loadagain = $data.find('#i6 a:nth-child(4)').attr('onclick').match(/\d+/);//获取重新读图数字
+		var loadagain = $data.find('#i6 a:nth-child(4)').attr('onclick').match(/nl\(\'(.*?)\'\)/)[1];//获取重新读图数字
 		var orgimg = $data.find('#i7 a').attr('href');
     	imgurl.replaceAll(tar.children[0]);
     	tar.parentElement.style.cssText = "margin: 25px auto;float:none;width:100%;";
