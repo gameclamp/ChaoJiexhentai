@@ -8,7 +8,7 @@
 // @include     http://g.e-hentai.org/g/*
 // @downloadURL https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai.user.js
 // @updateURL   https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai.user.js
-// @version     0.3
+// @version     0.3.1
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
 var $a = function(a){return document.querySelector(a)};
@@ -174,7 +174,7 @@ function GMget(tar,imageid){
 			//},
 			overrideMimeType: 'text/plain; charset=x-user-defined',
 			//responseType: 'blob',
-			timeout: 30000,
+			timeout: 50000,
 			onerror:function(res){
 				console.log('from chaojiexhentai:')
 				console.log(res)
