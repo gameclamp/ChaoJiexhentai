@@ -184,11 +184,11 @@ function GMget(tar,imageid){
 				GMget(tar,imageid);
 			},
 			onload:function(res){
-				var stime = performance.now();
+				//var stime = performance.now();
 				tar.setAttribute('static','loaded')
 		        var blob = res.response;
 				putImgInDb(imageid,blob);
-				console.log(performance.now()-stime);
+				//console.log(performance.now()-stime);
 				tar.parentElement.appendChild(creatorA('DelImg','','',function(){deleteImage(imageid)}));
 			}
 		})
