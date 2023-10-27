@@ -8,9 +8,10 @@
 // @icon        https://github.com/gameclamp/ChaoJiexhentai/raw/master/icon.png
 // @include     https://exhentai.org/g/*
 // @include     http://g.e-hentai.org/g/*
+// @connect     *
 // @downloadURL https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.user.js
 // @updateURL   https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.meta.js
-// @version     0.3.5
+// @version     0.3.6
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
 var $a = function(a){return document.querySelector(a)};
@@ -142,12 +143,12 @@ function getImageFile(evt,a){
 	        var imgURL = URL.createObjectURL(request.result.blob);
 	        // Set img src to ObjectURL
 	        tar.children[0].src = imgURL;
-	        tar.children[0].style.cssText = '';
+	        tar.children[0].style.cssText = 'max-width:100%;';
 	        // Revoking ObjectURL
 	        URL.revokeObjectURL(imgURL);
   			tar.setAttribute('static','loaded')
-            tar.firstChild.style.cssText = "width:100%;";
-		    tar.parentElement.style.cssText = "margin: 25px auto;float:none;width:auto;";
+            //tar.firstChild.style.cssText = "width:100%;";
+		    tar.parentElement.style.cssText = "margin: 25px auto;float:none;width:70%;";
 		    tar.parentElement.appendChild(creatorA('DelImg','','',function(){deleteImage(imageid)}));
 		    getImageFile(nextA(tar),'');
   			//console.log('have set src')
@@ -163,12 +164,12 @@ function GMget(tar,imageid){
     $.get(tar.href,function(data){//从小图地址获取大图页html
 		var $data = $(data);
     	var imgurl = $data.find('#img');
-		var loadagain = $data.find('#i6 a:nth-child(4)').attr('onclick').match(/nl\(\'(.*?)\'\)/)[1];//获取重新读图数字
+		var loadagain = $data.find('#loadfail').attr('onclick').match(/nl\(\'(.*?)\'\)/)[1];//获取重新读图数字
 		var orgimg = $data.find('#i7 a').attr('href');
         // var cdnimg = imgurl.attr('src').replace(/http:\/\//,'http://120.52.72.21/');
-        // imgurl.attr('src',imgurl);
+        imgurl.attr('src',orgimg);
     	imgurl.replaceAll(tar.children[0]);
-        tar.firstChild.style.cssText = "width:100%;";
+        //tar.firstChild.style.cssText = "width:100%;";
     	tar.parentElement.style.cssText = "margin: 25px auto;float:none;width:auto;";
     	//console.log('need to getImg')
 	    GM_xmlhttpRequest({
@@ -179,7 +180,7 @@ function GMget(tar,imageid){
 				//Accept:"image//png,image/*;q=0.8,*/*;q=0.5",
 			//},
 			responseType: 'blob',
-			timeout: 50000,
+			timeout: 80000,
 			onerror:function(res){
 				console.log('from chaojiexhentai:')
 				console.log(res)
@@ -215,7 +216,7 @@ function getNextPage(callback){
 		$('#gdt').append(b);
 		putInGdt(a.find('.gdtl,.gdtm'));
 		if(typeof(callback)=='function'){callback()}
-	}) 
+	})
 }
 function putInGdt(elm){//区别两种dom树
 	if(elm[0].children[0].tagName=='DIV'){
