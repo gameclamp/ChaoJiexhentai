@@ -6,7 +6,7 @@
 ### 如何安装
 完整支持浏览器：[Firefox](http://sourceforge.net/projects/pcxfirefox/ "推荐pcx编译版")  
 需要扩展：[Greasemonkey](https://addons.mozilla.org/zh-CN/firefox/addon/greasemonkey/?src=search)  
-最后安装本脚本：[ChaoJiexhentai.user.js](https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai.user.js)
+最后安装本脚本：[ChaoJiexhentai-dev.user.js](https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.user.js)
 
 ### 详细功能介绍
 *  点击画册内某一缩略图，会弹出多图看图器。  
