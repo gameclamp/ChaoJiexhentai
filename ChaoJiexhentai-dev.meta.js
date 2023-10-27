@@ -10,6 +10,6 @@
 // @include     http://g.e-hentai.org/g/*
 // @downloadURL https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.user.js
 // @updateURL   https://github.com/gameclamp/ChaoJiexhentai/raw/master/ChaoJiexhentai-dev.meta.js
-// @version     0.3.5
+// @version     0.3.6
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
